@@ -1,0 +1,41 @@
+name: Purescript CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  install:
+    name: Install Purescript
+
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+    
+    steps:
+    - uses: actions/checkout@v2
+        
+    - name: Install Purescript
+      run: npm install -g purescript
+      
+    - name: Install Spago
+      run: npm install -g spago
+
+    - name: Install Pulp
+      run: npm install -g pulp
+
+    - name: Install Bower
+      run: npm install -g bower
+
+    - name: Install the packages with Bower
+      run: bower install
+
+    - name: Build with Pulp
+      run: pulp build
+
+    - name: Test with Pulp
+      run: pulp test
